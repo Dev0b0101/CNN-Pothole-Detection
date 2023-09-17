@@ -2,13 +2,20 @@
 <html>
 <head>
     <title>Result</title>
-    <link rel="stylesheet" href="./static/style.css">
+    <link rel="stylesheet" href="./static/style copy.css">
 </head>
 <body>
+
+    
+    <c>
     <h1>Result</h1>
     <form>
     <p>Prediction: <h2>{{ prediction }}</h2></p>
     <a href="/">Upload More</a>
     </form>
+</c>
+<d>{% if prediction == 'Normal' %} {<img src="./static/confetti.gif" class="overlay-image">} {% endif %}</d>
+
+
 </body>
 </html>
