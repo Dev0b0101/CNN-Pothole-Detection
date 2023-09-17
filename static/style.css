@@ -29,11 +29,18 @@ h1 {
     color: #fff;
 }
 
+h2 {
+    text-align: center;
+    padding: 15px;
+    background-color: #c6c6c6;
+    color: #292929;
+}
+
 form {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: rgb(142,41,38);
     box-shadow: 0 0 10px rgba(109, 105, 105, 0.1);
 }
 
@@ -43,8 +50,8 @@ input[type="file"] {
 }
 
 input[type="submit"] {
-    background-color: #333;
-    color: #fff;
+    background-color: #FFCC00;
+    color: #211d1d;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
@@ -56,9 +63,14 @@ label {
 }
 
 a {
-    background-color: #333;
-    color: #fff;
+    background-color: #FFCC00;
+    color: #211d1d;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
+}
+
+p {
+    font-size: 30px;
+    color: #e2e1e1
 }
