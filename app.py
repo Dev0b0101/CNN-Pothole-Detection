@@ -9,8 +9,6 @@ from PIL.ExifTags import TAGS, GPSTAGS
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
-
-# Load the CNN model
 model = None
 
 with open('model/pothole_cnn.json', 'r') as json_file:
@@ -18,7 +16,6 @@ with open('model/pothole_cnn.json', 'r') as json_file:
     model = model_from_json(loaded_model_json)
     model.load_weights('model/model_weights.h5')
 
-# Define a function to preprocess the image before prediction
 def preprocess_image(image_path):
    # if image_path.lower().endswith((".heic", ".heif")):
     #    img = Image.open(image_path)
@@ -81,7 +78,6 @@ def index():
 
             class_labels = ['normal', 'pothole']
             predicted_label = class_labels[predicted_class]
-            # You can customize this part to display the prediction results as needed.
             return render_template('result.html', prediction=predicted_label)
     return render_template('index.html')
 
