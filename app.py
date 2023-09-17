@@ -5,7 +5,7 @@ from tensorflow.keras.models import model_from_json
 import cv2
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
-#import pyheif
+import pillow_heif
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
@@ -17,9 +17,6 @@ with open('model/pothole_cnn.json', 'r') as json_file:
     model.load_weights('model/model_weights.h5')
 
 def preprocess_image(image_path):
-   # if image_path.lower().endswith((".heic", ".heif")):
-    #    img = Image.open(image_path)
-    #    img = img.convert('RGB')
     img = cv2.imread(image_path)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
