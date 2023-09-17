@@ -3,6 +3,8 @@ import os
 import numpy as np
 from tensorflow.keras.models import model_from_json
 import cv2
+from PIL import Image
+from PIL.ExifTags import TAGS, GPSTAGS
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
@@ -24,6 +26,43 @@ def preprocess_image(image_path):
     img = np.expand_dims(img, axis=0)  # Add batch dimension
     return img
 
+def get_exif_data(image_path):
+    try:
+        image = Image.open(image_path)
+        exif_data = image._getexif()
+        return exif_data
+    except (AttributeError, KeyError, IndexError):
+        return None
+def get_gps_info(exif_data):
+    if not exif_data:
+        return None
+
+    for tag, value in exif_data.items():
+        if TAGS.get(tag) == 'GPSInfo':
+            return value
+def extract_latitude_longitude(gps_info):
+    if not gps_info:
+        return None
+
+    latitude = gps_info[2][0] + gps_info[2][1] / 60 + gps_info[2][2] / 3600
+    longitude = gps_info[4][0] + gps_info[4][1] / 60 + gps_info[4][2] / 3600
+    return latitude, longitude
+
+# Replace with the path to your HEIC/HEIF file
+input_file_path = 'input_file.heic'
+output_file_path = 'output_file.jpg'
+
+try:
+    # Open the HEIC/HEIF file using Pillow
+    image = Image.open(input_file_path)
+
+    # Save it as a JPG file
+    image.save(output_file_path, 'JPEG')
+
+    print(f"Conversion successful. Image saved as {output_file_path}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -39,6 +78,18 @@ def index():
             image = preprocess_image(image_path)
             prediction = model.predict(image)
             predicted_class = np.argmax(prediction)
+            if True:
+                exif_data = get_exif_data(image_path)
+                if exif_data:
+                    gps_info = get_gps_info(exif_data)
+                    if gps_info:
+                        latitude, longitude = extract_latitude_longitude(gps_info)
+                        print(f"Latitude: {latitude}, Longitude: {longitude}")
+                    else:
+                        print("GPS information not found in the photo's EXIF data.")
+                else:
+                    print("EXIF data not found in the photo.")
+
             class_labels = ['normal', 'pothole']
             predicted_label = class_labels[predicted_class]
             # You can customize this part to display the prediction results as needed.
