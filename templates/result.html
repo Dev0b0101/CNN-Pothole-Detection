@@ -14,7 +14,7 @@
     <a href="/">Upload More</a>
     </form>
 </c>
-<d>{% if prediction == 'Normal' %} {<img src="./static/confetti.gif" class="overlay-image">} {% else %}{<img src="./static/pothole.gif" >}{% endif %}</d>
+<d>{% if prediction != 'Normal' %} {<img src="./static/pothole.gif" >}{% endif %}</d>
 
 
 </body>
