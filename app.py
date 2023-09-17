@@ -5,6 +5,7 @@ from tensorflow.keras.models import model_from_json
 import cv2
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
+#import pyheif
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
@@ -19,11 +20,15 @@ with open('model/pothole_cnn.json', 'r') as json_file:
 
 # Define a function to preprocess the image before prediction
 def preprocess_image(image_path):
+   # if image_path.lower().endswith((".heic", ".heif")):
+    #    img = Image.open(image_path)
+    #    img = img.convert('RGB')
     img = cv2.imread(image_path)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = cv2.resize(img, (300, 300))
     img = img / 255.0
-    img = np.expand_dims(img, axis=0)  # Add batch dimension
+    img = np.expand_dims(img, axis=0)
     return img
 
 def get_exif_data(image_path):
@@ -47,22 +52,6 @@ def extract_latitude_longitude(gps_info):
     latitude = gps_info[2][0] + gps_info[2][1] / 60 + gps_info[2][2] / 3600
     longitude = gps_info[4][0] + gps_info[4][1] / 60 + gps_info[4][2] / 3600
     return latitude, longitude
-
-# Replace with the path to your HEIC/HEIF file
-input_file_path = 'input_file.heic'
-output_file_path = 'output_file.jpg'
-
-try:
-    # Open the HEIC/HEIF file using Pillow
-    image = Image.open(input_file_path)
-
-    # Save it as a JPG file
-    image.save(output_file_path, 'JPEG')
-
-    print(f"Conversion successful. Image saved as {output_file_path}")
-except Exception as e:
-    print(f"An error occurred: {e}")
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
