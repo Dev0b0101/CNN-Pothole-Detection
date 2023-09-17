@@ -71,3 +71,8 @@ p {
     height: 100%;
     z-index: 9999; /* Set a high z-index to ensure it covers all content */
 }
+
+img {
+   padding-left: 33%;
+   padding-top: 5%;
+}
