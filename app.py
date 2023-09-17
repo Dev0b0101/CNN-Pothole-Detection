@@ -4,8 +4,7 @@ import numpy as np
 from tensorflow.keras.models import model_from_json
 import cv2
 from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS
-import pillow_heif
+from PIL.ExifTags import TAGS
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
@@ -73,7 +72,7 @@ def index():
                 else:
                     print("EXIF data not found in the photo.")
 
-            class_labels = ['normal', 'pothole']
+            class_labels = ['Normal', 'Pothole']
             predicted_label = class_labels[predicted_class]
             return render_template('result.html', prediction=predicted_label)
     return render_template('index.html')
