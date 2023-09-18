@@ -5,6 +5,7 @@ from tensorflow.keras.models import model_from_json
 import cv2
 from PIL import Image
 from PIL.ExifTags import TAGS
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
 model = None
